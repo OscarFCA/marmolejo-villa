@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Marmolejo y Villa A.C.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:        #EDE8DF;
+    --bg-alt:    #F0EDE6;
+    --ink:       #2B2218;
+    --ink-soft:  #5C4B3A;
+    --cream:     #F5F0E8;
+    --line:      rgba(43,34,24,.16);
+    --field-line:rgba(43,34,24,.38);
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Inter", system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:300;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+
+  .wrap{max-width:1280px;margin:0 auto;padding:0 52px}
+
+  /* ---------- buttons ---------- */
+  .pill{
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--sans);font-weight:400;font-size:14px;letter-spacing:.01em;
+    padding:14px 32px;border-radius:999px;cursor:pointer;
+    transition:transform .25s ease, background .25s ease, color .25s ease, opacity .25s ease;
+    border:1px solid transparent;
+  }
+  .pill--dark{background:var(--ink);color:var(--cream)}
+  .pill--dark:hover{transform:translateY(-2px);opacity:.9}
+  .pill--ghost{background:rgba(245,240,232,.08);color:var(--cream);border-color:rgba(245,240,232,.6);backdrop-filter:blur(3px)}
+  .pill--ghost:hover{background:rgba(245,240,232,.92);color:var(--ink);border-color:transparent}
+
+  /* ---------- header ---------- */
+  header.site{position:relative;z-index:20;background:var(--bg)}
+  header.site .wrap{display:flex;align-items:center;justify-content:flex-start;padding-top:18px;padding-bottom:18px}
+  .brand{display:flex;align-items:center}
+  .brand img{height:50px;width:auto;object-fit:contain}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:96vh;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+  .hero__media{position:absolute;inset:0;z-index:0}
+  .hero__media video,.hero__media img{width:100%;height:100%;object-fit:cover}
+  .hero__media::after{
+    content:"";position:absolute;inset:0;
+    background:
+      linear-gradient(90deg, rgba(20,14,8,.42) 0%, rgba(20,14,8,.12) 48%, rgba(20,14,8,0) 78%),
+      linear-gradient(180deg, rgba(20,14,8,.30) 0%, rgba(20,14,8,0) 26%, rgba(20,14,8,0) 58%, rgba(20,14,8,.55) 100%);
+  }
+  .hero__inner{position:relative;z-index:10;width:100%;padding-top:78px}
+  .hero h1{
+    font-family:var(--serif);color:var(--cream);
+    font-weight:500;font-size:clamp(34px,4.4vw,64px);line-height:1.06;
+    letter-spacing:-.005em;max-width:24ch;
+    text-shadow:0 2px 24px rgba(0,0,0,.32);
+  }
+  .hero .pill{margin-top:38px}
+
+  /* ---------- marquee ---------- */
+  .marquee{overflow:hidden;white-space:nowrap;padding:40px 0}
+  .marquee--hero{position:relative;z-index:10;padding:24px 0 30px}
+  .marquee--hero .word{color:#F0EDE6;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+  .marquee--hero .dot{color:rgba(245,240,232,.72)}
+  .marquee__track{display:inline-flex;align-items:center;will-change:transform;animation:scroll 90s linear infinite}
+  .marquee:hover .marquee__track{animation-play-state:paused}
+  .marquee__track span.word{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(48px,7.4vw,104px);line-height:1;color:var(--ink);letter-spacing:-.01em;
+    vertical-align:middle;
+  }
+  .dot{display:inline-flex;align-items:center;padding:0 clamp(14px,1.8vw,30px);color:var(--ink-soft);font-size:clamp(20px,2.6vw,40px);line-height:1}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- sections ---------- */
+  section.block{padding:104px 0}
+  .h-section{font-family:var(--serif);font-weight:500;font-size:clamp(34px,4vw,52px);line-height:1.05;letter-spacing:-.01em}
+  .lead{font-size:15px;color:var(--ink-soft);line-height:1.74;max-width:48ch}
+
+  /* programas */
+  .prog-grid{display:grid;grid-template-columns:1.04fr 0.96fr;gap:80px;align-items:start}
+  .prog-left h2{margin-bottom:26px}
+  .prog-left .lead{margin-bottom:18px}
+  .figure{position:relative;overflow:hidden}
+  .figure img{width:100%;height:100%;object-fit:cover}
+  .prog-img{position:sticky;top:40px}
+  .prog-img img{aspect-ratio:3/4.1}
+
+  /* accordion */
+  .acc{margin-top:24px}
+  .acc__item{border-top:1px solid var(--line)}
+  .acc__item:last-child{border-bottom:1px solid var(--line)}
+  .acc__head{
+    width:100%;background:none;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    padding:22px 2px;text-align:left;color:var(--ink);
+  }
+  .acc__head h3{font-family:var(--serif);font-weight:500;font-size:clamp(21px,2.2vw,27px);line-height:1.15;letter-spacing:-.005em;transition:opacity .2s}
+  .acc__head:hover h3{opacity:.6}
+  .acc__sign{flex:none;width:22px;height:22px;position:relative}
+  .acc__sign::before,.acc__sign::after{content:"";position:absolute;background:var(--ink-soft);transition:transform .3s ease, opacity .3s ease}
+  .acc__sign::before{top:50%;left:0;width:100%;height:1.4px;transform:translateY(-50%)}
+  .acc__sign::after{left:50%;top:0;height:100%;width:1.4px;transform:translateX(-50%)}
+  .acc__item.open .acc__sign::after{transform:translateX(-50%) scaleY(0);opacity:0}
+  .acc__panel{overflow:hidden;max-height:0;transition:max-height .4s ease}
+  .acc__panel p{padding:0 48px 26px 2px;font-size:14.5px;color:var(--ink-soft);line-height:1.74;max-width:60ch}
+
+  .acc-cta{margin-top:46px}
+
+  /* quienes somos */
+  .qs-grid{display:grid;grid-template-columns:1.02fr 1fr;gap:80px;align-items:start}
+  .qs-copy h2{margin-bottom:26px}
+  .qs-copy .pill{margin-top:32px}
+  .qs-copy .figure{margin-top:40px}
+  .qs-copy .figure img{aspect-ratio:16/10}
+  .qs-img{margin-top:0}
+  .qs-img img{aspect-ratio:3/4}
+  .qs-bottom{margin-top:56px}
+  .qs-bottom img{width:100%;aspect-ratio:16/10;object-fit:cover}
+
+  /* redes */
+  .redes{text-align:center;padding:36px 0 104px}
+
+  /* gallery carousel */
+  .gallery-section{padding-bottom:104px;overflow:hidden}
+  .carousel{overflow:hidden;cursor:default}
+  .carousel__track{display:flex;gap:14px;width:max-content;will-change:transform;animation:scroll-right 60s linear infinite}
+  .carousel:hover .carousel__track{animation-play-state:paused}
+  .carousel__track img{height:clamp(220px,26vw,320px);width:auto;flex:none;object-fit:cover;cursor:pointer;transition:transform .4s ease, filter .4s ease;filter:saturate(.97)}
+  .carousel__track img:hover{transform:scale(1.03);filter:saturate(1.05)}
+  @keyframes scroll-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+  /* lightbox */
+  .lightbox{position:fixed;inset:0;z-index:100;background:rgba(20,14,8,.93);display:none;align-items:center;justify-content:center;padding:6vh 5vw;cursor:zoom-out}
+  .lightbox.open{display:flex;animation:lbfade .25s ease}
+  @keyframes lbfade{from{opacity:0}to{opacity:1}}
+  .lightbox__img{max-width:90vw;max-height:88vh;object-fit:contain;box-shadow:0 24px 70px rgba(0,0,0,.55);cursor:default}
+  .lightbox__close{position:absolute;top:22px;right:30px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:rgba(245,240,232,.08);border:1px solid rgba(245,240,232,.4);border-radius:999px;color:var(--cream);font-size:26px;line-height:1;cursor:pointer;transition:background .2s, transform .2s}
+  .lightbox__close:hover{background:rgba(245,240,232,.92);color:var(--ink);transform:rotate(90deg)}
+
+  /* contacto */
+  .contact-grid{display:grid;grid-template-columns:0.92fr 1.08fr;gap:88px;align-items:start}
+  .contact-copy h2{margin-bottom:28px}
+  .contact-copy p+p{margin-top:18px}
+  form{display:grid;gap:26px}
+  .grp-label{font-size:15.5px;color:var(--ink);margin-bottom:-8px}
+  .field label{display:block;font-size:14.5px;color:var(--ink);margin-bottom:10px;letter-spacing:.005em}
+  .field label .req{color:var(--ink-soft);opacity:.7;font-size:13px}
+  .field input,.field textarea{
+    width:100%;background:transparent;border:1px solid var(--field-line);
+    font-family:var(--sans);font-size:15px;color:var(--ink);font-weight:300;
+    transition:border-color .25s, box-shadow .25s;
+  }
+  .field input{height:54px;border-radius:999px;padding:0 24px}
+  .field textarea{border-radius:26px;padding:18px 24px;resize:vertical;min-height:148px}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+  .name-row{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  form .pill{justify-self:start;margin-top:4px}
+  .form-note{font-size:13.5px;color:var(--ink-soft);opacity:0;transition:opacity .3s;margin-top:2px}
+  .form-note.show{opacity:1}
+
+  /* footer */
+  footer.site{background:var(--bg);color:var(--ink);padding:92px 0 76px;border-top:1px solid var(--line)}
+  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:48px;flex-wrap:wrap}
+  .foot-brand .fname{font-family:var(--serif);font-size:clamp(34px,4vw,52px);font-weight:500;line-height:1;letter-spacing:-.01em}
+  .foot-credit{margin-top:20px;font-size:14px;color:var(--ink-soft)}
+  .foot-credit a{text-decoration:underline;text-underline-offset:2px}
+  .foot-right{display:flex;gap:84px;flex-wrap:wrap}
+  .foot-col h4{font-family:var(--serif);font-weight:500;font-size:27px;line-height:1;margin-bottom:18px;letter-spacing:-.005em}
+  .foot-col p{font-size:14.5px;color:var(--ink-soft);line-height:1.75}
+  .foot-col a:hover{opacity:.6}
+
+  @media (max-width:960px){
+    .wrap{padding:0 26px}
+    section.block{padding:70px 0}
+    .prog-grid,.qs-grid,.contact-grid{grid-template-columns:1fr;gap:42px}
+    .prog-img{position:static}
+    .prog-img img{aspect-ratio:4/3}
+    .qs-img{margin-top:0}
+    .qs-img img{aspect-ratio:4/3}
+    .foot-grid{flex-direction:column;gap:44px}
+    .foot-right{gap:56px}
+  }
+  @media (max-width:560px){
+    .name-row{grid-template-columns:1fr}
+    .hero__inner{padding-top:54px}
+  }
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site">
+    <div class="wrap" style="padding: 0px 52px">
+      <a class="brand" href="#top" aria-label="Marmolejo y Villa A.C.">
+        <img src="assets/logo-full.png" alt="Marmolejo y Villa" style="width: 130px; height: 74px" />
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top" data-screen-label="Hero">
+    <div class="hero__media" style="height: 639px">
+      <video autoplay muted loop playsinline poster="assets/hero.png">
+        <source src="assets/hero.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="hero__inner">
+      <div class="wrap">
+        <h1 style="font-size: 72px; font-weight: 500">Preservamos la cultura, impulsamos el talento y conectamos comunidades</h1>
+        <a class="pill pill--ghost" href="#contacto" style="width: 201px">Contactar</a>
+      </div>
+    </div>
+    <div class="marquee marquee--hero" aria-hidden="true" style="height: 209px">
+      <div class="marquee__track" id="mq1"></div>
+    </div>
+  </section>
+
+  <!-- NUESTROS PROGRAMAS -->
+  <section class="block" id="programas" data-screen-label="Programas">
+    <div class="wrap">
+      <div class="prog-grid">
+        <div class="prog-left">
+          <h2 class="h-section">Nuestros<br />programas</h2>
+          <p class="lead">En Marmolejo y Villa A.C. impulsamos iniciativas que buscan preservar, difundir y fortalecer las expresiones culturales, artísticas y sociales que forman parte de nuestra identidad. A través de programas educativos, proyectos culturales y colaboraciones estratégicas, trabajamos para generar espacios donde el arte, la tradición y la comunidad pueden crecer y trascender.</p>
+          <div class="acc" id="acc"></div>
+          <div class="acc-cta">
+            <a class="pill pill--dark" href="#contacto">Colaborar</a>
+          </div>
+        </div>
+        <figure class="figure prog-img">
+          <img src="assets/programas.jpeg" alt="Familia y comunidad en un evento cultural" />
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIENES SOMOS -->
+  <section class="block" id="quienes" data-screen-label="Quienes Somos">
+    <div class="wrap">
+      <div class="qs-grid">
+        <div class="qs-copy">
+          <h2 class="h-section">¿Quiénes Somos?</h2>
+          <p class="lead">Somos una asociación dedicada a preservar, promover y difundir la riqueza cultural y artística que forma parte de nuestra identidad. A través de programas, proyectos y colaboraciones, impulsamos iniciativas que fortalecen el legado cultural y crean nuevas oportunidades para las generaciones presentes y futuras.</p>
+          <a class="pill pill--dark" href="#contacto">Contactar</a>
+          <figure class="figure qs-bottom">
+            <img src="assets/crowd.jpeg" alt="Homenaje en la Estación Emblemática Autores y Compositores de México" />
+          </figure>
+        </div>
+        <figure class="figure qs-img">
+          <img src="assets/quienes-chapultepec.jpeg" alt="Familia frente al Castillo de Chapultepec, Ciudad de México" />
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE 2 -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track" id="mq2"></div>
+  </div>
+
+  <!-- REDES -->
+  <section class="redes" data-screen-label="Redes" style="font-weight: 400; height: 106px">
+    <a class="pill pill--dark" href="#contacto">Redes Sociales</a>
+  </section>
+
+  <!-- GALLERY CAROUSEL -->
+  <section class="gallery-section" data-screen-label="Galeria">
+    <div class="carousel" aria-label="Galería de fotos">
+      <div class="carousel__track" id="galTrack">
+        <img src="assets/g3.jpeg" alt="Evento cultural" />
+        <img src="assets/g1.jpeg" alt="Homenaje a autores y compositores" />
+        <img src="assets/g4.jpeg" alt="Comunidad reunida en celebración" />
+        <img src="assets/g2.jpeg" alt="Encuentro cultural" />
+        <img src="assets/g5.jpeg" alt="Familia y amigos en exposición" />
+        <img src="assets/crowd.jpeg" alt="Homenaje en Estación Autores y Compositores" />
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+    <button class="lightbox__close" id="lbClose" aria-label="Cerrar">&times;</button>
+    <img class="lightbox__img" id="lbImg" alt="" />
+  </div>
+
+  <!-- CONTACTO -->
+  <section class="block" id="contacto" data-screen-label="Contacto">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="contact-copy">
+          <h2 class="h-section">Contáctanos</h2>
+          <p class="lead">Creemos que la cultura se fortalece cuando se comparte. Si deseas colaborar con nuestros proyectos, participar en nuestras iniciativas culturales o conocer más sobre nuestras actividades, estaremos encantados de escucharte.</p>
+          <p class="lead">Ponte en contacto con nosotros y sé parte de una comunidad comprometida con preservar, difundir e impulsar el legado cultural para las nuevas generaciones.</p>
+        </div>
+        <form id="contactForm" novalidate>
+          <div class="grp-label">Nombre</div>
+          <div class="name-row">
+            <div class="field">
+              <label for="fn">First Name <span class="req">(requerido)</span></label>
+              <input id="fn" name="fn" type="text" required />
+            </div>
+            <div class="field">
+              <label for="ln">Last Name <span class="req">(requerido)</span></label>
+              <input id="ln" name="ln" type="text" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="em">Email <span class="req">(requerido)</span></label>
+            <input id="em" name="em" type="email" required />
+          </div>
+          <div class="field">
+            <label for="msg">Mensaje <span class="req">(requerido)</span></label>
+            <textarea id="msg" name="msg" required></textarea>
+          </div>
+          <button class="pill pill--dark" type="submit">Contactar</button>
+          <p class="form-note" id="formNote">Gracias. Hemos recibido tu mensaje.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site" data-screen-label="Footer">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <div class="fname" style="font-size: 54px">Marmolejo y Villa</div>
+          <p class="foot-credit">Made with <a href="https://lhiis.bubble-mesh.com/" target="_blank" rel="noopener">LHIIS</a></p>
+        </div>
+        <div class="foot-right">
+          <div class="foot-col">
+            <h4>Localización</h4>
+            <p>México<br />CDMX, Tlalpan 14330</p>
+          </div>
+          <div class="foot-col">
+            <h4>Contact</h4>
+            <p><a href="mailto:contacto@marmolejo-villa.org">contacto@marmolejo-villa.org</a><br /><a href="tel:+525531650560">(55) 3165 0560</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // ---- marquees ----
+  function buildMarquee(el, words){
+    const make = () => {
+      const frag = document.createDocumentFragment();
+      words.forEach((w)=>{
+        const s = document.createElement('span');
+        s.className = 'word'; s.textContent = w;
+        frag.appendChild(s);
+        const d = document.createElement('span');
+        d.className = 'dot'; d.textContent = '●';
+        frag.appendChild(d);
+      });
+      return frag;
+    };
+    el.appendChild(make());
+    el.appendChild(make());
+  }
+  buildMarquee(document.getElementById('mq1'), [
+    'Difusión','Arte','Música','Comunidad','Educación','Intercambio Cultural',
+    'Patrimonio','Creatividad','Juventud','Identidad','Historia',
+    'Innovación Cultural','Cultura','Tradición','Investigación'
+  ]);
+  buildMarquee(document.getElementById('mq2'), [
+    'Únete','Participa','Colabora','Súmate','Síguenos'
+  ]);
+
+  // ---- accordion (single-open) ----
+  const items = [
+    ['Difusión y promoción cultural','Impulsamos la difusión de tradiciones, expresiones artísticas y proyectos culturales mediante eventos, medios digitales, publicaciones y actividades que acercan la cultura a nuevas audiencias.'],
+    ['Formación y educación artística','Desarrollamos talleres, cursos, seminarios y programas educativos enfocados en música, arte, cultura y disciplinas creativas para promover el aprendizaje y el desarrollo del talento.'],
+    ['Programas de becas y apoyo a talentos','Creamos iniciativas que apoyan a jóvenes artistas, investigadores y creadores culturales mediante becas, mentorías y oportunidades para desarrollar su talento.'],
+    ['Organización de eventos culturales','Diseñamos y producimos encuentros culturales, conciertos, exposiciones, conversatorios y festivales que celebran la riqueza artística y promueven el intercambio cultural.'],
+    ['Intercambio cultural y colaboraciones','Establecemos alianzas con instituciones, organizaciones y comunidades para fomentar el intercambio cultural, el aprendizaje mutuo y el desarrollo de proyectos colaborativos.'],
+    ['Preservación del patrimonio cultural','Promovemos iniciativas para preservar tradiciones, prácticas artísticas, historias y conocimientos que forman parte del patrimonio cultural de nuestras comunidades.'],
+    ['Investigación cultural','Realizamos estudios, documentación y análisis sobre las manifestaciones culturales, tradiciones y expresiones artísticas con el objetivo de preservar el conocimiento y generar contenido que fortalezca la memoria cultural.']
+  ];
+  const accEl = document.getElementById('acc');
+  items.forEach(([title,body],idx)=>{
+    const item = document.createElement('div');
+    item.className = 'acc__item' + (idx===0 ? ' open' : '');
+    item.innerHTML =
+      '<button class="acc__head" aria-expanded="'+(idx===0)+'">'
+        +'<h3>'+title+'</h3>'
+        +'<span class="acc__sign" aria-hidden="true"></span>'
+      +'</button>'
+      +'<div class="acc__panel"><p>'+body+'</p></div>';
+    accEl.appendChild(item);
+  });
+  function setOpen(item, open){
+    const btn = item.querySelector('.acc__head');
+    const panel = item.querySelector('.acc__panel');
+    if(open){
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded','true');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+    } else {
+      item.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
+      panel.style.maxHeight = '0px';
+    }
+  }
+  const allItems = [...accEl.querySelectorAll('.acc__item')];
+  allItems.forEach(item=>{
+    item.querySelector('.acc__head').addEventListener('click', ()=>{
+      const isOpen = item.classList.contains('open');
+      // close every item, then open the clicked one if it was closed
+      allItems.forEach(other=>setOpen(other, false));
+      if(!isOpen) setOpen(item, true);
+    });
+  });
+  requestAnimationFrame(()=>{
+    const first = accEl.querySelector('.acc__item.open');
+    if(first) setOpen(first, true);
+  });
+  window.addEventListener('resize', ()=>{
+    const open = accEl.querySelector('.acc__item.open .acc__panel');
+    if(open) open.style.maxHeight = open.scrollHeight + 'px';
+  });
+
+  // ---- form ----
+  document.getElementById('contactForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const f = e.target;
+    if(f.checkValidity()){
+      document.getElementById('formNote').classList.add('show');
+      f.reset();
+      setTimeout(()=>document.getElementById('formNote').classList.remove('show'), 5000);
+    } else {
+      f.reportValidity();
+    }
+  });
+
+  // ---- gallery carousel + lightbox ----
+  (function(){
+    const track = document.getElementById('galTrack');
+    if(!track) return;
+    // duplicate the set once for a seamless -50% loop
+    [...track.children].forEach(node => track.appendChild(node.cloneNode(true)));
+
+    // match the carousel's pixel speed to the "Síguenos" marquee (mq2)
+    function syncSpeed(){
+      const mq = document.getElementById('mq2');
+      if(!mq) return;
+      const mqDur = 90; // seconds, must match .marquee__track animation
+      const speed = (mq.scrollWidth / 2) / mqDur; // px per second
+      if(speed > 0){
+        const dur = (track.scrollWidth / 2) / speed;
+        track.style.animationDuration = dur.toFixed(1) + 's';
+      }
+    }
+    // run once images have a measurable width
+    if(document.readyState === 'complete') syncSpeed();
+    window.addEventListener('load', syncSpeed);
+    window.addEventListener('resize', syncSpeed);
+
+    // lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    function openLb(src, alt){
+      lbImg.src = src; lbImg.alt = alt || '';
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+      track.style.animationPlayState = 'paused';
+    }
+    function closeLb(){
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      track.style.animationPlayState = '';
+    }
+    track.addEventListener('click', (e)=>{
+      const img = e.target.closest('img');
+      if(img) openLb(img.src, img.alt);
+    });
+    document.getElementById('lbClose').addEventListener('click', closeLb);
+    lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLb(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLb(); });
+  })();
+</script>
+</body>
+</html>
+
+<style id="__om-edit-overrides">
+#mq1 >span:nth-child(19) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(17) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(21) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(23) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(22) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(24) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(25) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(27) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(26) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(28) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(29) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(30) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(31) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(32) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(1) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(2) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(3) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(4) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(5) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(6) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(7) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(8) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(9) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(10) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(12) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(13) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(14) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(15) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(16) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(18) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(20) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(33) { color: rgb(240, 237, 230) !important }
+#mq1 >span:nth-child(11) { color: rgb(240, 237, 230) !important }
+</style>
