@@ -1,0 +1,39 @@
+name: Deploy to Hostgator
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: hostgator-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: FTP sync to Hostgator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sync via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftp
+          server-dir: ${{ secrets.FTP_TARGET_DIR }}
+          local-dir: ./
+          log-level: standard
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/uploads/**
+            **/node_modules/**
+            **/.DS_Store
+            **/.thumbnail
+            README.md
