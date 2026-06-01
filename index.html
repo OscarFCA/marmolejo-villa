@@ -7,6 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){ emailjs.init({ publicKey: "fSEL9fgcAYl35Q3sX" }); })();
+</script>
 <style>
   :root{
     --bg:        #EDE8DF;
@@ -439,15 +443,38 @@
   });
 
   // ---- form ----
-  document.getElementById('contactForm').addEventListener('submit', (e)=>{
+  document.getElementById('contactForm').addEventListener('submit', async (e)=>{
     e.preventDefault();
     const f = e.target;
-    if(f.checkValidity()){
-      document.getElementById('formNote').classList.add('show');
+    if(!f.checkValidity()){ f.reportValidity(); return; }
+
+    const btn  = f.querySelector('button[type="submit"]');
+    const note = document.getElementById('formNote');
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+
+    const params = {
+      nombre:  (f.fn.value.trim() + ' ' + f.ln.value.trim()).trim(),
+      email:   f.em.value.trim(),
+      mensaje: f.msg.value.trim()
+    };
+
+    try {
+      await emailjs.send('service_sjobfdb', 'template_avaqrg6', params);
+      note.textContent = 'Gracias. Hemos recibido tu mensaje.';
+      note.style.color = '';
+      note.classList.add('show');
       f.reset();
-      setTimeout(()=>document.getElementById('formNote').classList.remove('show'), 5000);
-    } else {
-      f.reportValidity();
+      setTimeout(()=>note.classList.remove('show'), 6000);
+    } catch (err) {
+      console.error('EmailJS error', err);
+      note.textContent = 'No pudimos enviar tu mensaje. Inténtalo de nuevo o escríbenos a contacto@marmolejo-villa.org';
+      note.style.color = '#8a2a1f';
+      note.classList.add('show');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalLabel;
     }
   });
 
